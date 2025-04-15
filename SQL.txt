@@ -1,0 +1,45 @@
+CREATE DATABASE pos;
+USE pos;
+
+CREATE TABLE stock (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category VARCHAR(255),
+    name VARCHAR(255),
+    price DECIMAL(10,2),
+    image_path VARCHAR(255)
+);
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    role ENUM('admin', 'manager', 'salesman'),
+    password VARCHAR(255)
+);
+
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    phone VARCHAR(255)
+);
+
+CREATE TABLE sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    total DECIMAL(10,2),
+    date DATETIME,
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL
+);
+
+CREATE TABLE sale_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sale_id INT,
+    item_id INT,
+    price DECIMAL(10,2),
+    FOREIGN KEY (sale_id) REFERENCES sales(id),
+    FOREIGN KEY (item_id) REFERENCES stock(id)
+);
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) UNIQUE
+);
